@@ -1,0 +1,658 @@
+# VARIABLES
+1. var a: String? = "Prashuk"
+or
+var a = "Prashuk"
+print(a!) // 100% sure that value is there
+2. var b: Bool?
+print(b!) // run time error coz has nol value and we are unwrapping force
+print(b) // nil
+3. var c: Int
+print(c) // compile time error
+4. var a, b, c: Int
+
+ARC
+ARC is a compile time feature that is Apple's version of automated memory management. It stands for Automatic Reference Counting. This means that it only frees up memory for objects when there are zero strong references to them.
+STRONG
+Let's start off with what a strong reference is. It's essentially a normal reference (pointer and all), but it's special in it's own right in that it protects the referred object from getting deallocated by ARC by increasing it's retain count by 1. In essence, as long as anything has a strong reference to an object, it will not be deallocated. This is important to remember for later when I explain retain cycles and stuff.
+Strong references are used almost everywhere in Swift. In fact, the declaration of a property is strong by default! Generally, we are safe to use strong references when the hierarchy relationships of objects are linear. When a hierarchy of strong references flow from parent to child, then it's always ok to use strong references.
+WEAK
+A weak reference is just a pointer to an object that doesn't protect the object from being deallocated by ARC. While strong references increase the retain count of an object by 1, weak references do not. In addition, weak references zero out the pointer to your object when it successfully deallocates. This ensures that when you access a weak reference, it will either be a valid object, or nil.
+It’s often used when creating a parent child relationship. The parent has a strong reference to the child but the child only has a weak reference to the parent.
+READONLY
+we can set the property initially but then it can’t be changed
+
+In Swift, all weak references are non-constant Optionals (think var vs. let) because the reference can and will be mutated to nil when there is no longer anything holding a strong reference to it.
+
+Swift is a type safe language, meaning that every variable needs to have a specific type and a value that matches. Swift can also infer a variables type from its assigned value, making variable declarations more concise.
+
+# STRING
+1. var b = "Prashuk"
+var c = "Ajmera"
+var d = b + " " + c // Concatenation
+d += "." // Concatenation
+let f = 10
+let g = true
+let e = "Boy \(d) is good boy \(f) == \(g)" // string interpolation
+2. var a = "the innkeepers heaven"
+a.count
+a.isEmpty
+a.contains("h")
+a.append(", abcdef")
+a.removeLast()
+a.removeFirst()
+a.split(separator: " ") // array
+
+#  Int, Double, or Float
+var a = 5.832 // double
+var b: Int = Int(a) // 5
+var c: String = String(a) // "5.832" -> String
+var d = 37 + 5.892 // 42.892 -> double
+var e = a + Double(b) // 10.832
+
+var a: Bool = false
+var b: Bool = true
+a = !a // true
+var c = a && b // true coz a changed
+var d = a || b // true
+
+Optional variables tell the compiler that the variable is either storing a value or storing nothing, which is really useful when you need placeholders for potentially unknown values.
+
+# ARRAY
+var a: [String] = [] // it has empty but initialised
+var b: Array<String> = Array<String>() // it has empty but initialised
+a = ["Easy", "Medium", "Hard"]
+a.count // 3
+a.isEmpty // false
+a[2] = "Most Hard" // replaved
+print(a) // new array with just print statement
+var c = ["Ranger", "Paladin", "Druid"]
+c.append("Guns")
+c += ["Hello", "World"]
+c.insert("wollaa", at: 2)
+c.remove(at: 3)
+c.reverse() // ulti ho jayegi array
+c.sort() // sort hoyegi acsending order me
+c.contains("world") // case sensitive - false
+var a: [[String]] = [
+    ["Attack", "Barrage", "Heavy"],
+    ["Guard", "Eval", "Run"],
+    ["One", "Two", "Three"]
+]
+var b = a[0] // ["Attack", "Barrage", "Heavy"]
+var d = a[0][2] // Heavy
+
+# DICTIONARY
+they hold key-value pairs. All keys need to be of the same type, and the same goes for values. It's important to know that dictionary items are unordered, and their values are accessed with their associated keys.
+var a: [String: Int] = ["Bootle": 10, "Sheild": 20, "Book": 40]
+var b = a["Sheild"] // 20
+a["Bottle"] = 11
+a["Towel"] = 1
+print(a) // "["Bottle": 11, "Bootle": 10, "Towel": 1, "Book": 40, "Sheild": 20]\n"
+let allKeys = [String](a.keys) // ["Bottle", "Bootle", "Towel", "Book", "Sheild"]
+let allValues = [Int](a.values) // [11, 10, 1, 40, 20]
+a.updateValue(30, forKey: "Bootle")
+a.removeValue(forKey: "Bootle")
+var nestedDict = [
+    "a" : [
+        "b" : "c",
+        "d" : "e"
+    ],
+    "f": [
+        "g" : "h",
+        "i" : "j"
+    ]
+]
+
+# SETS
+var a: Set<String> = ["a", "a", "b", "c", "d"]
+a.insert("e") // can add only hashable - cutom needs to be hash - true
+a.remove("e")
+a.contains("A") // false
+a.sorted() // ["a", "b", "c", "d"]
+var b: Set = ["a", "b", "e"]
+var common = a.intersection(b) // {"a", "b"}
+var difference = a.symmetricDifference(b) // {"d", "c", "e"}
+var union = a.union(b) // {"d", "b", "a", "c", "e"}
+var subtract = a.subtracting(b) // {"d", "c"}
+a.formUnion(b) // {"d", "b", "a", "c", "e"}
+
+# TUPLES
+var a: (String, Int, Bool) = ("String", 25, true)
+a.0 // String
+a.1 // 25
+a.2 // true
+a.self // (.0 "String", .1 25, .2 true)
+var (b, c, d) = a
+b // "String"
+c // 25
+d // true
+# Naming tuple values
+var tup = (a: String, b: Int, c: Bool)
+tup.a = "Prashuk"
+var tup = (a: "String", b: 45, c: true)
+tup.a
+
+# IF ELSE LOOP
+
+# Unwrapping optionals
+1. force unwrapping
+var a: String? = "Prashuk"
+print(a!) 	// force unwrapping
+		// no error because a has value
+Now, var a: String?
+print(a!)	// show error
+This implies force unwrapping is like we know it has the value so we are unwrapping forcely
+2. optional binding
+var a: String? = "Prashuk"
+if let aP = a {
+	print(ap) // optional binding - prints Prashuk
+}
+Now, var a: String?
+if let aP = a {
+	print(ap) // it has nil value so it will execute else part if it is there
+} else {
+	print("Sorry")
+}
+
+# FOR-IN loops
+1. let name = "prashuk"
+for char in name {
+	print(char) // p r a s h u k
+}
+2. // also applies for array also
+3. // for dict
+for key in a.keys {
+	print(key)
+}
+4. for value in a.values {
+	print(value)
+}
+5. for (key, value) in a {
+	print(\(key) : \(value))
+}
+6. // for ranges
+for i in 1...10 {
+	print(i) // 1 to 10
+}
+1...10 // 1 to 10
+1..<10 // 1 to 9
+7. // sub array
+for i in array[2...] {
+	print(i) // print from index 2 to last
+}
+8. for i in array[..<3] { // 3 can be replaced by array.count
+	print(i) // print from index 0 to 2
+}
+
+# WHILE LOOP
+1. var a = 5
+while a > 0 {
+	a -= 1
+	print(a) // 4 3 2 1 0
+}
+2. repeat { // repeat will run atleast 1 time
+	a -= 1
+	print(a) // 4 3 2 1 0
+} while a > 0
+
+# SWITCH
+1. let a = "A"
+switch a { // print Got coz found it and cases are priority based
+	case "A":
+		print("Got")
+	case "B":
+		print("Not Got")
+	default: // must
+		print("default")
+}
+2. let mp = 26
+let hp = 24
+switch (mp, hp) { // can be used as tuple
+	case (15, 10):
+		print()
+	case (1...35, 20..<25):
+		print() // this will execute
+	default:
+		print("default")
+}
+3. let mp = 10
+let hp = 10
+switch (mp, hp) {
+	case (15, 10):
+		print()
+	case (1...35, 20..<25):
+		print()
+	case (let localMP, let localHP) where localMP + localHP = 20:
+		print() // now this will execute
+	default:
+		print("default")
+}
+
+# GUARD
+Guard statements in Swift act like gate keepers. Code execution can only get past them if their condition is true, otherwise the else statement that accompanies every guard statement will execute.
+let shopItems = ["a": 10, "b": 5, "c": 1000]
+let currentGold = 16
+for (item, price) in shopItems {
+	guard currentGold >= price {
+		print("Cant afford")
+		continue // must need a return or continue to exit guard  and notice that it is like if else loof without if body
+	} // it will not execute for c whose price is 1000
+}
+
+# FUNCTIONS
+1. func findAb() { // camel case
+	// func body
+}
+findAb() // func call
+2. func findAb() -> String{
+	// func body
+	return "String"
+}
+var returnValue = findAb()
+3. func findAb(level: Int) -> String{
+	print(level) // alos print the value level == 5
+	return "String"
+}
+var returnValue = findAb(level: 5) // also stores string value
+
+# FUNCTION OVERLOADING
+func findAb() {
+	print(1)
+}
+func findAb(damage: Int) {
+	print(2)
+}
+func findAb(damage: Doubl, weapon: String) -> Bool {
+	print(3)
+	return true
+}
+findAb() // 1
+findAb(damage: 34) // 2
+findAb(damage: 34, weapon: "String") // 3 and it will also stor return value
+
+# COMPLEX FUNCTION
+1. func findAb() -> Bool? {
+	return false
+}
+if let success = findAb() {
+	print(success)
+} else {
+	print("Not Execute") // it will execute when if  return nil
+}
+2. func findAb(level: String) -> (damage: Int, success: Bool) {
+	print(level)
+	return (25, true)
+}
+var x = findAb(level: "Prashuk") // x is tuple with 2 value
+3. func findAb(level: String = "Prashuk", success: Bool = true) {
+	print(level)
+	print(success)
+}
+findAb() // print-> Prashuk true
+findAb(level: "Ajmera", success: false) // Ajmera false
+
+# FUNCTION TYPES
+Every function has a type, or unique signature. Function types can be used in Swift like any other type, such as strings or integers. This can come in handy when you need to pass functions into other functions as parameters, or use them as return types.
+1. func findAb(level: Int) -> Int {
+	return level*4
+}
+(Int) -> Int // signature
+2. func findAbNew(level: Int, damage: (Int) -> Int) { // 2 arg is function passed
+	let newDamage = damage(level)
+	print(level)
+	print(newDamage)
+}
+findAbNew(level: 55, damage: findAb) // 55 220
+
+# CLOSURES (do it again)
+Like functions, closures are enclosed blocks of functionality but with more concise syntax. In Swift closures act like blocks or lambda expressions in other programming languages, allowing us to pass function-like operations around like variables. Closures can be use as parameters, return types, function, arguments..
+1. var closure: () -> () = {}
+2. var c: (Int) -> (Int) = { (base: Int) -> Int in
+	
+}
+3. var c: = { (base: Int) -> Int in
+	return 1
+}
+c(25) // return 1 -- runs 2 times.. one function body and c(25)
+4. var c: = { base in
+	return 1
+}
+5. var arr = [2,3,6,2,4,1]
+var orderSort = arr.sorted { (first, second) -> Bool in
+	return first < second
+} // 1 2 2 3 4 6
+6. func firstAb(completion: ([Int]) -> Void) {
+	completion(arr)
+}
+firstAb { (members) in
+	for num in arr {
+		print(num)
+	}
+}
+
+# TYPE ALIASING
+typealias AttackTuple = (name: String, damage: Int, recharge: Bool)
+var sunStrike: AttackTuple = ("Sun Strike", 45, false)
+1. func level(baseAttack: AttackTuple) -> AttackTuple {
+	let increase: AttackeTuple = (baseAttack.name, baseAttack.damage, true)
+	return increase
+}
+
+#VALUE & REFERRENCE datatypes
+1. Value Types - Structures (String, Int, Char, Booleans, Dict, Array, Numbers, Double), Enumeration (Optionals)
+2. Referrence Types - Functions, Classes, Closures
+3. Struct -> simple, encapsulated object needs + copied
+4. class -> anything needing to be passed by referrence + user inheritance
+
+# CLASSES
+These data structures can have properties, methods, initializers, and in the case of classes can have their own subclasses.
+1. class A {
+    var name: String
+    let health: Int
+    var move: String?
+    
+    init(name: String, health: Int) { // no optionals parameters
+        self.name = name
+        self.health = health
+    }
+    convenience init(name: String) {
+        self.init(name: name, health: 100) // setting default value
+    }
+    func printS() {
+        print("\(self.name), \(self.health)")
+    }
+}
+var player1 = A(name: "Prashuk", health: 99) // prashuk, 99, nil
+var player2 = A(name: "Ajmera") // Ajmera, 100, nil
+player1.printS() // prashuk, 99, nil
+player2.printS() // Ajmera, 100, nil
+2.
+var player1 = A(name: "Prashuk", health: 99) // prashuk, 99, nil
+var player2 = A(name: "Ajmera") // Ajmera, 100, nil
+var defaultPlayer = player1
+defaultPlayer.name = "Ilu"
+player1.printS() // ilu, 99, nil
+player2.printS() // Ajmera, 100, nil
+
+# ACCESS MODIFIERS & PROPERTIES
+https://medium.com/@abhimuralidharan/swift-3-0-1-access-control-9e71d641a56c
+Like most programming languages, swift allows you to limit, or control, how classes, structs, properties, and other entities are accessed based on the module or file they’re in. There are four levels of access in swift, public, internal, file private, and private.
+Swift also allows properties to be declared as static, class, read-only and read-write.
+- open/public: entities to be used within any source file from their defining module, and also in a source file from another module that imports the defining module
+//module 1
+public func A(){}
+open func B(){}
+//module 2
+override func A(){} // error
+override func B(){} // success
+An open class is accessible and subclassable outside of the defining module. An open class member is accessible and overridable outside of the defining module.
+A public class is accessible but not subclassable outside of the defining module. A publicclass member is accessible but not overridable outside of the defining module.
+- internal (default): entities to be used within any source file from their defining module, but not in any source file outside of that module. used in framework’s internal structure. Every entity in Swift class are declared as internal
+internal func internalMethod() {
+ print("I am inside UIKit")
+}
+Even if we import UIKit, we cannot use the internalMethod() inside our ViewController. It can only be accessed anywhere within the same module of UIKit.
+- fileprivate: restricts the use of an entity to its own defining source file. Use file-private access to hide the implementation details of a specific piece of functionality when those details are used within an entire file. ie; the functionality defined with a fileprivate access level can only be accessed from within the swift file where it is defined.
+1. // A.swift
+fileprivate func someFunction() {
+ print("I will only be called from inside A.swift file")
+}
+2. fileprivate var health: Int
+var Health: Int {
+	get { return 10} // read write
+	set { 
+		if (neaValue < 100) {
+			health = newValue
+		} 
+	}
+}
+// B.swift
+let obj = A()
+A.someFunction() // error
+- private (most restrictive): restricts the use of an entity to the enclosing declaration, and to extensions of that declaration that are in the same file. Use private access to hide the implementation details of a specific piece of functionality when those details are used only within a single declaration.
+// A.swift
+class A {
+	private var name = "First Letter"
+}
+extension A {
+	func printName() {
+		print(name) // you may access it here from swift 5. Swift 3 will throw error.
+	}
+}
+A()
+A().name // Error even if accessed from outside the class A{} of A.swift file.
+- static: same as java. it cannot be overridden and it is accesible from class itself. class.static . same for all instances.
+- read-only:
+var a: Int {
+	return b(some random variable)-a;
+} // every time we call a it return b-a
+
+# SUBCLASS
+class B: A {
+	var newUniqueProp: String // cant access in class A
+	init(name: String, newUniqueProp: String) {
+		self.newUniqueProp = newUniqueProp
+		super.init(params) // must call, inheritance herarchy, init for parent class
+	}
+	override static datatype here lets say name is Bstat here and in A is here
+}
+so calling in B.static will run B wala class function
+A.static will A wala class function
+and overriides also folows on other function too. take example of printS
+
+# STRUCTS
+Swift structures share a very similar syntax and functionality, but they are useful for creating different kinds of instances. While classes are well suited to complex data structures and are passed by reference, structs are passed by value and better suited to creating simple instances that don't need inheritance or reference capabilities.
+struct A {
+	let id: Int
+	var obj: [String]
+	var desc: String {
+		return self.id
+	}
+}
+var obj = ["Prashuk", "Ajmera", "IluAjmera"]
+var a = A(id: 1, obj: obj)
+struct has defualt initializer - already configure. we can also customized it in similar to class
+We can put our custom init with our variables.. no problem with that
+- mutating: In swift, classes are reference type whereas structures and enumerations are value types. The properties of value types cannot be modified within its instance methods by default. In order to modify the properties of a value type, you have to use the mutating keyword in the instance method. With this keyword, your method can then have the ability to mutate the values of the properties and write it back to the original structure when the method implementation ends.
+
+# OPTIONAL CHAINING
+Optional chaining allows you to unwrap an optional type that has optional properties of its own. This is most common in classes or structs that contain optional custom types. It’s handy to think of optional chains in a very literal sense, like a chain link. If all the links are present and strong, the chain continues, but if one link fails, the chain breaks.
+struct Item {
+    var description: String
+    var previousOwner: Owner?
+}
+struct Owner {
+    var name: String
+}
+var questDirectory = [
+    "Fetch Gemstones": [
+        "Objective": "Retrieve 5 gemstones",
+        "Secret": "Complete in under 5 minutes"
+    ],
+    "Defeat Big Boss": [
+        "Objective": "Beat the ultimate boss",
+        "Secret": "Win with 50% health left"
+    ]
+]
+var rareDagger = Item(description: "A Unique", previousOwner: nil)
+var daggerOwner = Owner(name: "Thief")
+rareDagger.previousOwner = daggerOwner
+if let owner = rareDagger.previousOwner?.name { // option chaining - it is always return a value which is an optional
+    print("this item used to owned by \(owner)")
+} else {
+    print("unknown")
+}
+// if there us no daggerOwner then it will return nil otherwise non nil
+
+# LAZY
+A lazy stored property is a property whose initial value is not calculated until the first time it is used. You indicate a lazy stored property by writing the lazy modifier before its declaration.
+You must always declare a lazy property as a variable (with the var keyword). Constant properties must always have a value before initialization completes, and therefore cannot be declared as lazy.
+Lazy variables are not initialised atomically and so is not thread safe.
+You can use lazy only with members of struct and class
+struct InterviewCandidate {
+    var isiOS:Bool?
+    lazy var iOSResumeDescription: String = {
+        return "I am an iOS developer"
+    }()
+    lazy var androidResumeDescription: String = {
+        return "I am an android developer"
+    }()
+}
+var person1 = InterviewCandidate()
+person1.isiOS = true
+if person1.isiOS! {
+    print(person1.iOSResumeDescription)
+} else {
+    print(person1.androidResumeDescription)
+}
+So , in the following code, the person is an iOS developer and the lazy variable iOSResumeDescription will be initialized when called for printing . androidResumeDescription will be nil
+
+# ENUM
+Swift enumerations allow you to put related values together into a group that you can use and access. Like switch statements, each value in an enum is considered a different case, which is one of the many reasons they go so well together.
+1. enum GameState {
+    case Completed
+    case Initializing
+    case LoadingData
+}
+2. enum GameState { case Completed, Initializing, LoadingData }
+var currState = GameState.Completed // Compeleted as string
+switch currState {
+case .Completed: // short version
+    print("Hello")
+case .Initializing:
+    print("Lello")
+case .LoadingData:
+    print("Mat Lo")
+@unknown default: // if we still want to add default the
+    print("No")
+} // notice here default is not required because enum has only three cases and all covered
+
+# ENUM Raw and Associated Values
+Enumerations can be expanded to include raw values, which can store unique or sequential values, or associated values, which can capture case specific parameters for use in their respective code blocks.
+RAW VALUE
+1. enum NonPlayableCharacters: String {
+    case Villager = "Common, not much useful info there"
+    case Blacksmith = "One per village, will have quest information"
+    case Merchant = "No limit per village, will make you cool stuff"
+}
+var blacksmith = NonPlayableCharacters.Blacksmith
+print(blacksmith.rawValue) // "One per village, will have quest information\n"
+2. enum NonPlayableCharacters: Int {
+    case Villager = "Common, not much useful info there"
+    case Blacksmith = "One per village, will have quest information"
+    case Merchant = "No limit per village, will make you cool stuff"
+}
+var blacksmith = NonPlayableCharacters.Blacksmith
+print(blacksmith.rawValue) // 2
+ASSOCIATED VALUE
+enum PlayerState {
+    case Alive
+    case KO(level: Int) // associated value
+    case Unknown(debugError: String) // associated value
+    // inside enum a function
+    func evaluateCase() {
+        switch self {
+        case .Alive:
+            print("Still kicking!")
+        case .KO(let restartLevel):
+            print("Sorry, back to level \(restartLevel) for you...")
+        case .Unknown(let message):
+            print(message)
+        }
+    }
+}
+PlayerState.KO(level: 1).evaluateCase() // Sorry, back to level 1 for you...
+
+# PROTOCOLS
+Swift protocols are essentially groups of properties and behaviors that can be adopted by a class or struct. If a class or struct implements a protocol, that class or struct enters into an agreement that says they will follow the blueprint the protocol has set out.
+protocol Collectable {
+    var name: String { get } // protocols have must get or get set property
+    var price: Int { get set }
+    init(withName: String, startingPrice: Int) // just the signature
+    func collect() -> Bool // only signature. the adopting class has responsible for implenting
+}
+class Item: Collectable { // think about UIViewController, UITableViewDelegate,,,,
+    var name: String
+    var price: Int
+    required init(withName: String, startingPrice: Int) { // required because we have put init in protocol thats why
+        self.name = withName
+        self.price = startingPrice
+    }
+   func collect() -> Bool {
+       print("Item collected!")
+       return true
+   }
+}
+let potion = Item(withName: "High Potion", startingPrice: 35)
+
+# EXTENSIONS
+Any class, struct, or protocol can be extended, regardless of whether you created it or it's part of the Swift language. Extensions can either be used to add default implementations of existing features, or new computed properties and functions.
+extension Collectable { // extending protocol
+    var priceIncrease: Int {
+        return self.price * 10
+    }
+    init(name: String) {
+        self.init(withName: name, startingPrice: 100)
+    }
+    func collect() -> Bool {
+        print("Default item couldn't be collected...")
+        return false
+    }
+}
+let antidote = Item(name: "Antidote")
+antidote.price
+extension String { // base class
+    func fancyDebug() {
+        print("This string has \(self.count) characters")
+    }
+}
+antidote.name.fancyDebug()
+
+# THROWING ERRORS
+Optionals are great for handling values that might be nil, but optionals alone won't account for situations when you need the program to send out and interpret an error. Swift makes throwing and responding to errors almost second nature, allowing you to customize how your code responds to unexpected actions.
+enum DataError: Error {
+    case EmptyPath
+    case InvalidPath
+}
+// Throwing functions
+func loadData(path: String) throws {
+    guard path.contains("/") else {
+        throw DataError.InvalidPath
+    }
+    guard !path.isEmpty else {
+        throw DataError.EmptyPath
+    }
+}
+Handeling Errors
+do {
+    try loadData(path: playerDataPath)
+    print("Data fetch successful!")
+} catch is DataError {
+    print("Invalid or empty path detected...")
+} catch {
+    print("Unknown error detected...")
+}
+
+# SINGLETON CLASS
+final class Singleton {
+    private init() { }
+    static let shared = Singleton()
+    var emptyStringArray = [String]()
+}
+Singleton.shared.emptyStringArray()
+
+# CONSTRUCTOR
+class myClass {
+  init(){
+    print("Hello World")
+  }
+}
+And if your class is a subcass, you have to call super.init() in your init() method
+
+# KEYWORDS
+- final: Final is class modifier which prevents it from being inherited or being overridden
+- defer: defer keyword which provides a block of code that will be executed in the case when execution is leaving the current scope.
+
+# MULTITHREADING
+1. Only use the Main Thread for updating views
+The basic idea is making sure that all views and interface elements are not blocked by other items in the Main Queue. A good example of this:
