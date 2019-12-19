@@ -15,7 +15,6 @@ class VC3: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
 
     /*
     // MARK: - Navigation
