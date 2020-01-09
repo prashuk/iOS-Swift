@@ -10,9 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let softTime = 5
-    let mediumTime = 8
-    let hardTime = 12
+    let eggTimes = ["Soft": 5, "Medium": 8, "Hard": 12]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +18,9 @@ class ViewController: UIViewController {
     
     @IBAction func hardnessSelected(_ sender: UIButton) {
         let hardness = sender.currentTitle
-        
+        let val = eggTimes[hardness!]
+        print(val!)
+        // Check the type of variables by holding the option key if ? then forcely unwrap it.
     }
     
 }
