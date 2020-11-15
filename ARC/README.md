@@ -72,3 +72,49 @@ Unowned references, by contrast, are never optional types. If you try to access 
 Reference cycles for objects occur when properties reference each other. Like objects, closures are also reference types and can cause cycles. Closures *capture*, or close over, the objects they operate on.
 
 For example, if you assign a closure to a property of a class, and that closure uses instance properties of that same class, you have a reference cycle. In other words, the object holds a reference to the closure via a stored property. The closure holds a reference to the object via the captured value of `self`.
+
+![Closure Reference](https://koenig-media.raywenderlich.com/uploads/2016/06/Closure-Referene-1-480x202.png)
+
+### Capture Lists
+
+Swift has a simple, elegant way to **break strong reference cycles in closures**. You declare a ***capture list*** in which you define the relationships between the closure and the objects it captures.
+
+```swift
+var x = 5
+var y = 5
+
+let someClosure = { [x] in
+  print("\(x), \(y)")
+}
+x = 6
+y = 6
+
+someClosure()        // Prints 5, 6
+print("\(x), \(y)")  // Prints 6, 6
+```
+
+`x` is in the closure capture list, so you copy `x` at the definition point of the closure. It’s ***captured by value***.
+
+`y` is not in the capture list, and is instead ***captured by reference***. This means that `y` will be whatever it is when the closure runs, rather than what it was at the point of capture.
+
+Capture lists come in handy for defining a `weak` or `unowned` relationship between objects used in a closure. In this case, `unowned` is a good fit, since the closure cannot exist if the instance of `CarrierSubscription` has gone away. (See xcode)
+
+### Using Unowned With Care
+
+If you are sure that a referenced object from a closure will never deallocate, you can use `unowned`. However, if it does deallocate, you are in trouble.
+
+-- Code --
+
+```swift
+lazy var greetingMaker: () -> String = { [weak self] in
+  guard let self = self else {
+    return "No greeting available."
+  }
+  return "Hello \(self.who)."
+}
+```
+
+The guard statement binds `self` from `weak self`. If `self` is `nil`, the closure returns *“No greeting available.”*
+
+On the other hand, if `self` is not `nil`, it makes `self` a strong reference, so the object is *guaranteed* to live until the end of the closure.
+

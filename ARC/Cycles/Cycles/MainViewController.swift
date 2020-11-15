@@ -50,6 +50,24 @@ class MainViewController: UIViewController {
     
     let subscription = CarrierSubscription(name: "TelBel", countryCode: "0032", number: "31415728", user: user)
     iphone.provision(carrierSubscription: subscription)
+    
+    print(subscription.completePhoneNumber())
+    /*
+     CarrierSubscription does not deallocates, due to the strong reference cycle between the object and the closure.
+     
+     https://koenig-media.raywenderlich.com/uploads/2019/02/Closure-472x320.png
+     */
+    
+    let greetingMaker: () -> String
+    do {
+      let mermaid = WWDCGreeting(who: "caffeinated")
+      greetingMaker = mermaid.greeting
+    }
+    print(greetingMaker())
+    /*
+     Fatal Error of unowned
+     The app hit a runtime exception because the closure expected self.who to still be valid, but you deallocated it when mermaid went out of scope at the end of the do block.
+     */
   }
 }
 
@@ -118,6 +136,16 @@ class CarrierSubscription {
    Since a User with no CarrierSubscription can exist, but no CarrierSubscription can exist without a User, the user reference should be unowned.
    */
   
+  lazy var completePhoneNumber: () -> String = { [unowned self] in
+    self.countryCode + " " + self.number
+  }
+  /*
+   The property is lazy, meaning that you’ll delay its assignment until the first time you use the property.
+   */
+  /* After adding unowned to self in capture list of closure
+   This adds [unowned self] to the capture list for the closure. It means that you’ve captured self as an unowned reference instead of a strong reference.
+   */
+  
   init(name: String, countryCode: String, number: String, user: User) {
     self.name = name
     self.countryCode = countryCode
@@ -131,5 +159,20 @@ class CarrierSubscription {
   
   deinit {
     print("Deallocation CarrierSubscription named: \(name)")
+  }
+}
+
+class WWDCGreeting {
+  let who: String
+  
+  init(who: String) {
+    self.who = who
+  }
+  
+  lazy var greeting: () -> String = { [weak self] in
+    guard let self = self else {
+      return "No greeting available."
+    }
+    return "Hello \(self.who)."
   }
 }
