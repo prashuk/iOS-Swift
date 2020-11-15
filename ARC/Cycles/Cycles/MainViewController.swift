@@ -38,6 +38,7 @@ class MainViewController: UIViewController {
   func runScenario() {
     let user = User(name: "Prashuk")
     let iphone = Phone(model: "iPhone X")
+    
     user.add(phone: iphone)
     /*
      Here, you add iPhone to user. add(phone:) also sets the owner property of iPhone to user.
@@ -46,12 +47,16 @@ class MainViewController: UIViewController {
      
      https://koenig-media.raywenderlich.com/uploads/2016/05/UserIphoneCycle.png
      */
+    
+    let subscription = CarrierSubscription(name: "TelBel", countryCode: "0032", number: "31415728", user: user)
+    iphone.provision(carrierSubscription: subscription)
   }
 }
 
 class User {
   let name: String
   private(set) var phones: [Phone] = []
+  var subscription: [CarrierSubscription] = []
   
   init(name: String) {
     self.name = name
@@ -77,6 +82,7 @@ class Phone {
   /*
    Build and run again. Now user and phone deallocate properly once the runScenario() method exits scope.
    */
+  var carrierSubscription: CarrierSubscription?
   
   init(model: String) {
     self.model = model
@@ -85,5 +91,45 @@ class Phone {
   
   deinit {
     print("Deallocating phone named: \(model)")
+  }
+  
+  func provision(carrierSubscription: CarrierSubscription) {
+    self.carrierSubscription = carrierSubscription
+  }
+  
+  func decomission() {
+    carrierSubscription = nil
+  }
+}
+
+class CarrierSubscription {
+  let name: String
+  let countryCode: String
+  let number: String
+  unowned let user: User
+  /*
+   Break the Chain
+   Either the reference from user to subscription or the reference from subscription to user should be unowned to break the cycle. The question is, which of the two to choose. This is where a little bit of knowledge of your domain helps.
+
+   A user owns a carrier subscription, but, contrary to what carriers may think, the carrier subscription does not own the user.
+
+   Moreover, it doesn’t make sense for a CarrierSubscription to exist without an owning User. This is why you declared it as an immutable let property in the first place.
+
+   Since a User with no CarrierSubscription can exist, but no CarrierSubscription can exist without a User, the user reference should be unowned.
+   */
+  
+  init(name: String, countryCode: String, number: String, user: User) {
+    self.name = name
+    self.countryCode = countryCode
+    self.number = number
+    self.user = user
+    
+    user.subscription.append(self)
+    
+    print("CarrierSubscription \(name) intialized")
+  }
+  
+  deinit {
+    print("Deallocation CarrierSubscription named: \(name)")
   }
 }

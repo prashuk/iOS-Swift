@@ -55,3 +55,20 @@ While `object2` references `object1`, it does so weakly, meaning it doesn’t af
 
 When both `variable1` and `variable2` go away, `object1` will have a reference count of zero and `deinit` will run. This removes the strong reference to `object2`, which subsequently deinitializes.
 
+## Unowned References
+
+There is another reference modifier you can use that doesn’t increase the reference count: `unowned`.
+
+`unowned` vs `weak`? A weak reference is *always* optional and automatically becomes `nil` when the referenced object goes away.
+
+Unowned references, by contrast, are never optional types. If you try to access an unowned property that refers to a deinitialized object, you’ll trigger a runtime error comparable to force unwrapping a `nil` optional type.
+
+![Table](https://koenig-media.raywenderlich.com/uploads/2016/05/Table-480x227.png)
+
+-- Code --
+
+## Reference Cycles With Closures
+
+Reference cycles for objects occur when properties reference each other. Like objects, closures are also reference types and can cause cycles. Closures *capture*, or close over, the objects they operate on.
+
+For example, if you assign a closure to a property of a class, and that closure uses instance properties of that same class, you have a reference cycle. In other words, the object holds a reference to the closure via a stored property. The closure holds a reference to the object via the captured value of `self`.
