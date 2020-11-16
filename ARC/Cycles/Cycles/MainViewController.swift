@@ -1,31 +1,3 @@
-/// Copyright (c) 2019 Razeware LLC
-/// 
-/// Permission is hereby granted, free of charge, to any person obtaining a copy
-/// of this software and associated documentation files (the "Software"), to deal
-/// in the Software without restriction, including without limitation the rights
-/// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-/// copies of the Software, and to permit persons to whom the Software is
-/// furnished to do so, subject to the following conditions:
-/// 
-/// The above copyright notice and this permission notice shall be included in
-/// all copies or substantial portions of the Software.
-/// 
-/// Notwithstanding the foregoing, you may not use, copy, modify, merge, publish,
-/// distribute, sublicense, create a derivative work, and/or sell copies of the
-/// Software in any work that is designed, intended, or marketed for pedagogical or
-/// instructional purposes related to programming, coding, application development,
-/// or information technology.  Permission for such use, copying, modification,
-/// merger, publication, distribution, sublicensing, creation of derivative works,
-/// or sale is expressly withheld.
-/// 
-/// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-/// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-/// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-/// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-/// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-/// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-/// THE SOFTWARE.
-
 import UIKit
 
 class MainViewController: UIViewController {
@@ -42,7 +14,7 @@ class MainViewController: UIViewController {
     user.add(phone: iphone)
     /*
      Here, you add iPhone to user. add(phone:) also sets the owner property of iPhone to user.
-
+     
      Now build and run, and you’ll see user and iPhone do not deallocate. A strong reference cycle between the two objects prevents ARC from deallocating either of them.
      
      https://koenig-media.raywenderlich.com/uploads/2016/05/UserIphoneCycle.png
@@ -67,6 +39,26 @@ class MainViewController: UIViewController {
     /*
      Fatal Error of unowned
      The app hit a runtime exception because the closure expected self.who to still be valid, but you deallocated it when mermaid went out of scope at the end of the do block.
+     */
+    
+    do {
+      let ernie = Person(name: "Ernie")
+      let bert = Person(name: "Bert")
+      
+//      ernie.friends.append(bert) // Not deallocated
+//      bert.friends.append(ernie) // Not deallocated
+      
+      ernie.friends.append(Unowned(bert))
+      bert.friends.append(Unowned(ernie))
+    }
+    /*
+     ernie and bert stay alive by keeping a reference to each other in their friends array, although the array itself is a value type.
+     
+     Make the friends array unowned and Xcode will show an error: unowned only applies to class types.
+     
+     To break the cycle here, you’ll have to create a generic wrapper object and use it to add instances to the array.
+     
+     The friends array isn’t a collection of Person objects anymore, but instead a collection of Unowned objects that serve as wrappers for the Person instances.
      */
   }
 }
@@ -128,11 +120,11 @@ class CarrierSubscription {
   /*
    Break the Chain
    Either the reference from user to subscription or the reference from subscription to user should be unowned to break the cycle. The question is, which of the two to choose. This is where a little bit of knowledge of your domain helps.
-
+   
    A user owns a carrier subscription, but, contrary to what carriers may think, the carrier subscription does not own the user.
-
+   
    Moreover, it doesn’t make sense for a CarrierSubscription to exist without an owning User. This is why you declared it as an immutable let property in the first place.
-
+   
    Since a User with no CarrierSubscription can exist, but no CarrierSubscription can exist without a User, the user reference should be unowned.
    */
   
@@ -174,5 +166,27 @@ class WWDCGreeting {
       return "No greeting available."
     }
     return "Hello \(self.who)."
+  }
+}
+
+class Unowned<T: AnyObject> {
+  unowned var value: T
+  init (_ value: T) {
+    self.value = value
+  }
+}
+
+
+class Person {
+  var name: String
+  var friends: [Unowned<Person>] = []
+  
+  init(name: String) {
+    self.name = name
+    print("New person instance: \(name)")
+  }
+  
+  deinit {
+    print("Person instance \(name) is being deallocated")
   }
 }

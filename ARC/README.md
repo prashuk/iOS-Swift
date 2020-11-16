@@ -118,3 +118,45 @@ The guard statement binds `self` from `weak self`. If `self` is `nil`, the closu
 
 On the other hand, if `self` is not `nil`, it makes `self` a strong reference, so the object is *guaranteed* to live until the end of the closure.
 
+## Contacts - Xcode Project
+
+[Apple’s Documentation](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmPractical.html) recommends that a *parent* object should have a strong hold on a *child* object by convention — not the other way around. This means that giving `Contact` a strong hold on a `Number`, and `Number` an unowned reference to a `Contact`, is the most convenient solution:
+
+```swift
+class Number {
+  unowned var contact: Contact
+  // Other code...
+}
+class Contact {
+  var number: Number?
+  // Other code...
+}
+```
+
+## Cycles With Value Types and Reference Types
+
+**Swift types are *reference types*, like classes, or *value types*, like structures or enumerations.** You copy a value type when you pass it, whereas reference types share a single copy of the information they reference.
+
+This means that you can’t have cycles with value types. Everything with value types is a copy, not a reference, meaning that they can’t create cyclical relationships. You need at least two references to make a cycle.
+
+```swift
+struct Node { // Error
+  var payload = 0
+  var next: Node?
+}
+```
+
+Hmm, the compiler’s not happy. A `struct` value type cannot be recursive or use an instance of itself. Otherwise, a `struct` of this type would have an infinite size.
+
+Change `struct` to a class:
+
+```swift
+class Node {
+  var payload = 0
+  var next: Node?
+}
+```
+
+Self reference is not an issue for classes (i.e. reference types), so the compiler error disappears.
+
+-- Code --
