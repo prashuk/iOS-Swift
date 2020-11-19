@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-//        simpleQueues()
+        simpleQueues()
         
 //        queuesWithQoS()
         
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
          
 //        queueWithDelay()
         
-        fetchImage()
+//        fetchImage()
         
         // useWorkItem()
     }
