@@ -25,4 +25,4 @@ print(activeQuests)
 // More common methods
 activeQuests.contains("All-4-One")
 activeQuests.sorted()
-
+activeQuests.count

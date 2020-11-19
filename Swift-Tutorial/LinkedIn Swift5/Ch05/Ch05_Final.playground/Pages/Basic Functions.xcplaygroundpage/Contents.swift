@@ -14,9 +14,9 @@
  
  */
 // Basic function
-func findNearestAlly(level: Int) -> String {
+func findNearestAlly(oflevel level: Int) -> String {
     print("Searching for ally above level \(level)")
     return "Argus"
 }
 
-var ally = findNearestAlly(level: 5)
+var ally = findNearestAlly(oflevel: 5)

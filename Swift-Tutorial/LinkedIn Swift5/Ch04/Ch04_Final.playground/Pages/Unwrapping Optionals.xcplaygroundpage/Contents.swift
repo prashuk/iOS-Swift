@@ -48,3 +48,26 @@ if let fetchGems = questDirectory["Fetch Gemstones"]?["Objective"] {
 } else {
     print("That quest is no longer available")
 }
+
+// String is definitely a string
+// String? might be nil or might be a string
+// String! might be nil but when you use it you’re absolutely sure it has a string
+var name: String! = nil
+var name2: String? = nil
+if let name = name {
+    print(name)
+} else {
+    print("Not Found")
+}
+
+// Option unwrap using guard and it should be inside function
+// guard let will unwrap an optional for you, but if it finds nil inside it expects you to exit the function, loop, or condition you used it in.
+func greet(_ name: String?) {
+    guard let unname = name else {
+        print("Nil")
+        return
+    }
+    
+    print(unname)
+}
+greet(nil)

@@ -18,14 +18,18 @@ Dictionary elements can be easily updated and removed using subscript syntax or 
 // Caching and overwriting items
 var playerStats: [String: Int] = ["HP": 100, "Attack": 35, "Gold": 29]
 var oldValue = playerStats.updateValue(30, forKey: "Attack")
-
-//playerStats = ["Evasion": 12, "MP": 55]
+playerStats
+playerStats = ["Evasion": 12, "MP": 55]
 
 // Caching and removing items
-//playerStats["Gold"] = nil
-var removedValue = playerStats.removeValue(forKey: "Gold")
+playerStats["Gold"] = nil
+playerStats.removeValue(forKey: "Gold")
+playerStats
 
-print(playerStats)
+// Sorted Map
+let sortedPlayerStats = playerStats.keys.sorted()
+let sortPlayer = playerStats.sorted{ $0.0 > $1.0 }
+sortPlayer
 
 // Nested dictionaries
 var questBoard = [
@@ -40,3 +44,27 @@ var questBoard = [
 ]
 
 var gemstoneObjective = questBoard["Fetch Gemstones"]?["Objective"]
+
+
+let responseMessage: [Int: String] = [200: "OK",
+                                      403: "Access forbidden",
+                                      404: "File not found",
+                                      500: "Internal server error"]
+let httpCode: [Int] = [200, 403, 301]
+
+for code in httpCode {
+    if let msg = responseMessage[code] {
+        print(msg)
+    } else {
+        print("Unknown")
+    }
+}
+for (key, value) in responseMessage {
+    if httpCode.contains(key) {
+        print(key, value)
+    } else {
+        print("\(key) Not found")
+    }
+}
+
+

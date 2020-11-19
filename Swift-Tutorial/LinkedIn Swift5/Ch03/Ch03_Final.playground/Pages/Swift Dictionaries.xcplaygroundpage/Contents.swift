@@ -12,7 +12,7 @@
  + Access all the keys and values of **blacksmithShopItems**
  
  [Previous Topic](@previous)                                                 [Next Topic](@next)
-
+ 
  */
 // Creating dictionaries
 var blacksmithShop: [String: Int] = ["Bottle": 10, "Shield": 15, "Ocarina": 1000]
@@ -27,3 +27,9 @@ print(blacksmithShop)
 // All keys and values
 let allKeys = [String](blacksmithShop.keys)
 let allValues = [Int](blacksmithShop.values)
+
+for (key, value) in blacksmithShop {
+    print(key, value)
+}
+
+blacksmithShop["Bottle"] != nil // use for contains

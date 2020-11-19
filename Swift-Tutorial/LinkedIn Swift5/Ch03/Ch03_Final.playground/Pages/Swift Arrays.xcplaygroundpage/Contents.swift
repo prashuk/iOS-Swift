@@ -14,16 +14,35 @@
  [Next Topic](@next)
  
  */
-// Creating arrays
 var levelDifficulty: [String] = ["Easy", "Moderate", "Veteran", "Nightmare"]
 var extraSyntax1: Array<String> = Array<String>()
 
-// Count and isEmpty
 levelDifficulty.count
 levelDifficulty.isEmpty
 
-// Accessing array values
 var mostDifficult = levelDifficulty[3]
 levelDifficulty[3] = "Utter Ridiculousness"
 
+for item in levelDifficulty {
+    print(item)
+}
 
+for (i, element) in levelDifficulty.enumerated() {
+    print(i, element, levelDifficulty[i])
+}
+
+for i in 0..<levelDifficulty.count {
+    print(i, levelDifficulty[i])
+}
+
+for i in 0...levelDifficulty.count-1 {
+    print(i, levelDifficulty[i])
+}
+
+for i in levelDifficulty.indices {
+    print(i, levelDifficulty[i])
+}
+
+levelDifficulty.dropFirst()
+levelDifficulty.dropFirst(2)
+levelDifficulty
