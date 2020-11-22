@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' buildActiveScheme='true'>
+    <pages>
+        <page name='3. Strings &amp; Char'/>
+        <page name='4. Collection Types'/>
+        <page name='5. Control Flow'/>
+        <page name='6. Functions'/>
+        <page name='7. Closure'/>
+        <page name='8. Enum'/>
+        <page name='9. Structures &amp; Classes'/>
+        <page name='10. Properties'/>
+        <page name='11. Methods'/>
+        <page name='12. Subscripts'/>
+        <page name='16. Optional Chaining'/>
+        <page name='26. Access Control'/>
+    </pages>
+</playground>
