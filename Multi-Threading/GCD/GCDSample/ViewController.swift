@@ -19,57 +19,70 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        simpleQueues()
+//        simpleQueues()
         
-//        queuesWithQoS()
+        queuesWithQoS()
         
 //         concurrentQueues()
+        
 //         if let queue = inactiveQueue {
 //            queue.activate()
 //         }
-         
+        
 //        queueWithDelay()
         
 //        fetchImage()
         
-        // useWorkItem()
+//        useWorkItem()
     }
     
-    
+    // MARK:- Step 1 (Simple Queue)
     func simpleQueues() {
+        // Custom Queue
         let queue = DispatchQueue(label: "com.prashuk.myqueue")
+        
+        // Sync Thread -- high priority
         queue.sync {
             for i in 50..<60 {
-                print("*", i)
+                print("🟣", i)
             }
         }
+        
+        // Async Thread -- low priority
         queue.async {
             for i in 0..<10 {
-                print("@", i)
+                print("🔴", i)
             }
         }
+        
+        // Main Thread
         for i in 100..<110 {
-            print("#", i)
+            print("🔵", i)
         }
     }
     
-    
+    // MARK:- Step 2 (qos)
     func queuesWithQoS() {
+        // Custom Queue with same priority
         let queue1 = DispatchQueue(label: "com.prashuk.q1", qos: .userInitiated)
+//        let queue2 = DispatchQueue(label: "com.prashuk.q2", qos: .userInitiated)
         let queue2 = DispatchQueue(label: "com.prashuk.q2", qos: .utility)
+        
+        // Asyn Call for both queues
         queue1.async {
             for i in 50..<60 {
-                print("*", i)
+                print("🟢", i)
             }
         }
         queue2.async {
             for i in 0..<10 {
-                print("@", i)
+                print("🔴", i)
             }
         }
-        for i in 100..<110 {
-            print("#", i)
-        }
+        
+//        for i in 100..<110 {
+//            print("#", i)
+//        }
     }
     
     

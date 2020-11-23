@@ -2,7 +2,12 @@
 
 https://www.appcoda.com/grand-central-dispatch/
 
-In iOS, Apple provides two ways to do multitasking: The ***Grand Central Dispatch (GCD)*** and ***NSOperationQueue*** frameworks. Both of them work perfectly when it’s time to assign tasks to different threads, or different queues other than the main one. No matter what, there’s one rule that should be always respected: **The main thread must be always remain free** so it serves the user interface and user interactions. **Any time-consuming or CPU demanding tasks should run on *concurrent* or *background* queues.**
+Two ways to do multitasking:
+
+- ***Grand Central Dispatch (GCD)***
+- ***NSOperationQueue***
+
+No matter what, there’s one rule that should be always respected: **The main thread must be always remain free** so it serves the user interface and user interactions. **Any time-consuming or CPU demanding tasks should run on *concurrent* or *background* queues.**
 
 **Any changes you want to apply to the UI must be always done on the main thread.**
 
@@ -10,15 +15,23 @@ For example, you can download the data for an image on a secondary, background d
 
 ### Grand Central Dispatch (GCD)
 
-It is a low-level API for `managing` concurrent operations. It can help you improve your app’s responsiveness by deferring computationally expensive tasks to the background. It’s an easier concurrency model to work with than locks and threads.
+It is a low-level API for `managing` concurrent operations.
 
 ### GCD Concepts
 
-To understand GCD, you need to be comfortable with several concepts related to concurrency and threading.
+Concepts of concurrency and threading.
 
-First off, the dominating phrase in GCD is the *dispatch queue*. A queue is actually a block of code that can be executed *synchronously* or *asynchronously*, either on the main or on a background thread. Once a queue is created, the operating system is the one that manages it and gives it time to be processed on any core of the CPU.
+First off, the dominating phrase in GCD is the ***dispatch queue***. A queue is actually a block of code that can be executed ***synchronously*** or ***asynchronously***, either on the main or on a background thread. Once a queue is created, the operating system is the one that manages it and gives it time to be processed on any core of the CPU.
 
-Next, another important concept is the *work item*. A work item is literally a block of code that is either written along with the queue creation, or it gets assigned to a queue and it can be used more than once (reused). The work item is what you think of exactly: It’s the code that a dispatch queue will run. The execution of work items in a queue also follows the FIFO pattern. This execution can be *synchronous* or *asynchronous*. In the synchronous case, the running app does not exit the code block of the item until the execution finishes. On the other hand, when queues are scheduled to run asynchronously, then the running app calls the work item block and it returns at once. Once again, we’ll see all those differences later in action.
+Next, another important concept is the ***work item***. A work item is literally a block of code that is either written along with the queue creation, or it gets assigned to a queue and it can be used more than once (reused).
+
+The work item is what you think of exactly: It’s the code that a dispatch queue will run.
+
+The execution of work items in a queue also follows the FIFO pattern. This execution can be *synchronous* or *asynchronous*.
+
+In the synchronous case, the running app does not exit the code block of the item until the execution finishes.
+
+In the asynchronously case, the running app calls the work item block and it returns at once.
 
 #### Concurrency
 
@@ -34,25 +47,27 @@ In iOS, a process or application consists of one or more threads. The operating 
 
 GCD is built on top of threads. Under the hood it manages a shared thread pool. With GCD you add blocks of code or work items to **dispatch queues** and GCD decides which thread to execute them on.
 
-As you structure your code, you’ll find code blocks that can run simultaneously and some that should not. This then allows you to use GCD to take advantage of concurrent execution.
+Note that GCD decides how much **parallelism** it requires based on the system and available system resources.
 
-*Note that GCD decides how much **parallelism** it requires based on the system and available system resources. It’s important to note that parallelism requires concurrency, but concurrency does not guarantee parallelism.*
+It’s important to note that parallelism requires concurrency, but concurrency does not guarantee parallelism.
 
 Basically, concurrency is about **structure** while parallelism is about **execution**.
 
 #### Queues
 
-As mentioned before, GCD operates on **dispatch queues** through a class named `DispatchQueue`. You submit units of work to this **queue** and GCD will execute them in a **FIFO** order , guaranteeing that the first task submitted is the first one started.
+As mentioned before, GCD operates on **dispatch queues** through a class named `DispatchQueue`. You submit units of work to this **queue** and GCD will execute them in a **FIFO** order, guaranteeing that the first task submitted is the first one started.
 
-**Dispatch queues are thread-safe** which means that you can access them from multiple threads simultaneously. The benefits of GCD are apparent when you understand how dispatch queues provide **thread safety to parts of your own code. The key to this is to choose the right *kind* of dispatch queue and the right *dispatching function* to submit your work to the queue.**
+**Dispatch queues are thread-safe** which means that you can access them from multiple threads simultaneously. The benefits of GCD are apparent when you understand how dispatch queues provide thread safety to parts of your own code. The key to this is to choose the right *kind* of dispatch queue and the right *dispatching function* to submit your work to the queue.
 
 Queues can be either ***serial*** or ***concurrent***. 
 
-* Serial queues guarantee that only one task runs at any given time. GCD controls the execution timing. You won’t know the amount of time between one task ending and the next one beginning:  a work item starts to be executed once the previous one has finished (unless of course it’s the first item assigned in the queue)
+* Serial queues guarantee that only one task runs at any given time. GCD controls the execution timing. You won’t know the amount of time between one task ending and the next one beginning:  a work item starts to be executed once the previous one has finished
 
 <img src="https://koenig-media.raywenderlich.com/uploads/2014/09/Serial-Queue-Swift-480x272.png" alt="grand central dispatch tutorial" style="zoom:75%;" />
 
-* Concurrent queues allow multiple tasks to run at the same time. The queue guarantees tasks start in the order you add them. Tasks can finish in any order and you have no knowledge of the time it will take for the next task to start, nor the number of tasks that are running at any given time. the work items are executed in parallel
+* Concurrent queues allow multiple tasks to run at the same time. The queue guarantees tasks start in the order you add them. Tasks can finish in any order and you have no knowledge of the time it will take for the next task to start, nor the number of tasks that are running at any given time.
+
+  The work items are executed in parallel
 
 <img src="https://koenig-media.raywenderlich.com/uploads/2014/09/Concurrent-Queue-Swift-480x272.png" alt="grand central dispatch tutorial" style="zoom:75%;" />
 
