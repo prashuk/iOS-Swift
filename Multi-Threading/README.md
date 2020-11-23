@@ -1,7 +1,5 @@
 # Multithreading-iOS
 
-https://www.appcoda.com/grand-central-dispatch/
-
 Two ways to do multitasking:
 
 - ***Grand Central Dispatch (GCD)***
@@ -103,6 +101,10 @@ An ***asynchronous*** function returns immediately, ordering the task to start b
 You’ve heard about tasks quite a bit by now. For the purposes of this tutorial you can consider a task to be a [closure](https://docs.swift.org/swift-book/LanguageGuide/Closures.html). Closures are self-contained, callable blocks of code you can store and pass around.
 
 Each task you submit to a `DispatchQueue` is a `DispatchWorkItem`. You can configure the behavior of a `DispatchWorkItem` such as its QoS class or whether to spawn a new detached thread.
+
+
+
+
 
 ### Handling Background Tasks
 
@@ -208,25 +210,3 @@ class PhotoManager {
 The private initializer makes sure that the only `PhotoManager` is then one assigned to `shared`. This way, you don’t have to worry about syncing changes to your photo store between different managers.
 
 You still have to deal with thread safety when accessing code in the singleton that manipulates shared internal data. You can handle this through methods such as synchronizing data access. You’ll see one approach in the next section.
-
-## Examples
-
-```swift
-func simpleQueues() {
-    let queue = DispatchQueue(label: "com.prashuk.myqueue")
-    queue.sync {
-        for i in 50..<60 {
-            print("*", i)
-        }
-    }
-    queue.async {
-        for i in 0..<10 {
-            print("@", i)
-        }
-    }
-    for i in 100..<110 {
-        print("#", i)
-    }   
-}
-```
-
