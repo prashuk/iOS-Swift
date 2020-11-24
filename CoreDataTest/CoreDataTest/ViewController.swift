@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UITableViewController {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -15,7 +16,21 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchData()
+        fetchPerson()
+        
+        relationShipDem0()
+    }
+    
+    func relationShipDem0() {
+        let family = Family(context: context)
+        family.name = "ABC Family"
+        
+        let person = Person(context: context)
+        person.name = "Maggie"
+        
+        family.addToPeople(person)
+        
+        try! self.context.save()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,9 +52,11 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let action = UIContextualAction(style: .destructive, title: "Delete") { (action, view, handler) in
             let personToRemove = self.items?[indexPath.row]
+            
+            // Delete Person from Core Data
             self.context.delete(personToRemove!)
             try! self.context.save()
-            self.fetchData()
+            self.fetchPerson()
         }
         
         return UISwipeActionsConfiguration(actions: [action])
@@ -56,17 +73,17 @@ class ViewController: UITableViewController {
         textFeild.text = selectedPerson.name
         
         let saveButton = UIAlertAction(title: "Save", style: .default) { (action) in
+            
+            // Edit Person Core Data
             let textFeild = alert.textFields![0]
             selectedPerson.name = textFeild.text
             
-            // Save new object to Core Data
             do {
                 try self.context.save()
             }
             catch { }
             
-            // Fetch data from Core Data
-            self.fetchData()
+            self.fetchPerson()
         }
         
         alert.addAction(saveButton)
@@ -94,28 +111,23 @@ class ViewController: UITableViewController {
             catch { }
             
             // Fetch data from Core Data
-            self.fetchData()
+            self.fetchPerson()
         }
         
         alert.addAction(submitButton)
         self.present(alert, animated: true, completion: nil)
     }
     
-    func deleteData(_ person: Person) {
-        self.context.delete(person)
+    func fetchPerson() {
+        let request = Person.fetchRequest() as NSFetchRequest<Person>
         
-        do {
-            try context.save()
-        }
-        catch {
-            
-        }
+//        let pred = NSPredicate(format: "name CONTAINS %@", "Prashuk")
+//        request.predicate = pred
         
-        self.fetchData()
-    }
-    
-    func fetchData() {
-        self.items = try! context.fetch(Person.fetchRequest())
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        request.sortDescriptors = [sort]
+        
+        self.items = try! context.fetch(request)
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
