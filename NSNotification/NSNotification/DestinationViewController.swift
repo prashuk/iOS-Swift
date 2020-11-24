@@ -16,11 +16,11 @@ class DestinationViewController: UIViewController {
     }
     
     @IBAction func mumbaiBtn(_ sender: Any) {
-        NotificationCenter.default.post(name: .mumbai, object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Mumbai"), object: nil)
     }
     
     @IBAction func bangaloreBtn(_ sender: Any) {
-        NotificationCenter.default.post(name: .bangalore, object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "Dehli"), object: nil)
     }
     
 }

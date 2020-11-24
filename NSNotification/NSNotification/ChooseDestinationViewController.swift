@@ -15,9 +15,9 @@ class ChooseDestinationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(setToMumbai(notification:)), name: .mumbai, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setToMumbai(notification:)), name: NSNotification.Name(rawValue: "Mumbai"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(setToBangalore(notfication:)), name: .bangalore, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setToBangalore(notfication:)), name: NSNotification.Name(rawValue: "Dehli"), object: nil)
     }
 
     @objc func setToMumbai(notification: NSNotification) {
@@ -25,12 +25,7 @@ class ChooseDestinationViewController: UIViewController {
     }
     
     @objc func setToBangalore(notfication: NSNotification) {
-         cityLbl.text = "Bangalore"
+         cityLbl.text = "Dehli"
     }
     
-}
-
-extension Notification.Name {
-    static let mumbai = Notification.Name(rawValue: "Mumbai")
-    static let bangalore = Notification.Name(rawValue: "Bangalore")
 }
