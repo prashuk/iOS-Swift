@@ -12,4 +12,4 @@ enum VendingMachineError: Error {
 }
 throw VendingMachineError.insufficientFunds(coinsNeeded: 5)
 // following code throws an error to indicate that five additional coins are needed by the vending machine:
-Design
+// Design
