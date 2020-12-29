@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw' buildActiveScheme='true'>
     <pages>
+        <page name='1. The Basics'/>
+        <page name='2. Basic Operators'/>
         <page name='3. Strings &amp; Char'/>
         <page name='4. Collection Types'/>
         <page name='5. Control Flow'/>
@@ -18,6 +20,5 @@
         <page name='17. Error Handling'/>
         <page name='18. Type Casting'/>
         <page name='26. Access Control'/>
-        <page name='1. The Basics'/>
     </pages>
 </playground>
