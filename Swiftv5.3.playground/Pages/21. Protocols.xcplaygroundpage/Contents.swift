@@ -73,8 +73,14 @@ protocol RandomNumberGenerator {
 }
 
 class LinearCongruentialGenerator: RandomNumberGenerator {
+    var lastRandom = 42.0
+    let m = 139968.0
+    let a = 3877.0
+    let c = 29573.0
     func random() -> Double {
-        return 12.0
+        lastRandom = ((lastRandom * a + c)
+                        .truncatingRemainder(dividingBy:m))
+        return lastRandom / m
     }
 }
 
@@ -250,3 +256,129 @@ let tracker = DiceGameTracker()
 let game = SnakeAndLadder()
 game.delegate = tracker
 game.play()
+
+
+
+// Adding Protocol Conformance with an Extension
+// You can extend an existing type to adopt and conform to a new protocol, even if you don’t have access to the source code for the existing type.
+protocol TextRepresentable {
+    var textualDescription: String { get }
+}
+extension Dice: TextRepresentable {
+    var textualDescription: String {
+        "A \(sides)-sided dice"
+    }
+}
+let d12 = Dice(sides: 12, generator: LinearCongruentialGenerator())
+print(d12.textualDescription)
+
+
+
+// Adopting a Protocol Using a Synthesized Implementation
+// Swift can automatically provide the protocol conformance for Equatable, Hashable, and Comparable in many simple cases.
+// Using this synthesized implementation means you don’t have to write repetitive boilerplate code to implement the protocol requirements yourself.
+/*
+ Swift provides a synthesized implementation of Equatable for the following kinds of custom types:
+ Structures that have only stored properties that conform to the Equatable protocol
+ Enumerations that have only associated types that conform to the Equatable protocol
+ Enumerations that have no associated types
+*/
+// To receive a synthesized implementation of ==, declare conformance to Equatable in the file that contains the original declaration, without implementing an == operator yourself. The Equatable protocol provides a default implementation of !=.
+// The example below defines a Vector3D structure for a three-dimensional position vector (x, y, z), similar to the Vector2D structure. Because the x, y, and z properties are all of an Equatable type, Vector3D receives synthesized implementations of the equivalence operators.
+struct Vector3D: Equatable {
+    var x = 0.0, y = 0.0, z = 0.0
+}
+let twoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
+let anotherTwoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
+if twoThreeFour == anotherTwoThreeFour {
+    print("These two vectors are also equivalent.")
+}
+// If Equatable is not written you will an error
+
+/*
+ Swift provides a synthesized implementation of Hashable for the following kinds of custom types:
+ Structures that have only stored properties that conform to the Hashable protocol
+ Enumerations that have only associated types that conform to the Hashable protocol
+ Enumerations that have no associated types
+*/
+// To receive a synthesized implementation of hash(into:), declare conformance to Hashable in the file that contains the original declaration, without implementing a hash(into:) method yourself.
+
+
+/*
+ Swift provides a synthesized implementation of Comparable for enumerations that don’t have a raw value. If the enumeration has associated types, they must all conform to the Comparable protocol. To receive a synthesized implementation of <, declare conformance to Comparable in the file that contains the original enumeration declaration, without implementing a < operator yourself. The Comparable protocol’s default implementation of <=, >, and >= provides the remaining comparison operators.
+*/
+enum SkillLevel: Comparable {
+    case beginner
+    case intermediate
+    case expert(stars: Int)
+}
+var levels = [SkillLevel.intermediate, SkillLevel.beginner, SkillLevel.expert(stars: 5), SkillLevel.expert(stars: 3)]
+for level in levels.sorted() {
+    print(level)
+}
+
+
+
+// Collections of Protocol Types
+let things: [TextRepresentable] = [d12, d12]
+for thing in things {
+    print(thing.textualDescription)
+}
+
+
+
+// Protocol Inheritance
+// A protocol can inherit one or more other protocols and can add further requirements on top of the requirements it inherits.
+protocol InheritingProtocol: SomeProtocol, AnotherProtocol {
+    // protocol definition goes here
+}
+
+
+
+// Class-Only Protocols
+// You can limit protocol adoption to class types (and not structures or enumerations) by adding the AnyObject protocol to a protocol’s inheritance list.
+protocol SomeClassOnlyProtocol: AnyObject, SomeProtocol {
+    // class-only protocol definition goes here
+}
+// In the example above, SomeClassOnlyProtocol can only be adopted by class types. It’s a compile-time error to write a structure or enumeration definition that tries to adopt SomeClassOnlyProtocol.
+// Use a class-only protocol when the behavior defined by that protocol’s requirements assumes or requires that a conforming type has reference semantics rather than value semantics.
+
+
+
+
+// Protocol Composition
+// It can be useful to require a type to conform to multiple protocols at the same time. You can combine multiple protocols into a single requirement with a protocol composition.
+// Protocol compositions have the form SomeProtocol & AnotherProtocol. You can list as many protocols as you need, separating them with ampersands (&).
+protocol Name {
+    var name: String { get }
+}
+protocol Age {
+    var age: Int { get }
+}
+struct PersonOther: Name, Age {
+    var name: String
+    var age: Int
+}
+func wishHappyBirthday(to celebrator: PersonOther) {
+    print("Happy birthday, \(celebrator.name), you're \(celebrator.age)!")
+}
+func wishHappyBirthday(to celebrator: Name & Age) { //  It doesn’t matter which specific type is passed to the function, as long as it conforms to both of the required protocols.
+    print("Happy birthday, \(celebrator.name), you're \(celebrator.age)!")
+}
+let birthdayPerson = PersonOther(name: "Prashuk", age: 29)
+wishHappyBirthday(to: birthdayPerson)
+
+
+
+// Checking for Protocol Conformance
+// You can use the is and as operators described in Type Casting to check for protocol conformance, and to cast to a specific protocol. Checking for and casting to a protocol follows exactly the same syntax as checking for and casting to a type:
+/*
+ The is operator returns true if an instance conforms to a protocol and returns false if it doesn’t.
+ The as? version of the downcast operator returns an optional value of the protocol’s type, and this value is nil if the instance doesn’t conform to that protocol.
+ The as! version of the downcast operator forces the downcast to the protocol type and triggers a runtime error if the downcast doesn’t succeed.
+*/
+
+
+
+// Optional Protocol Requirements
+
