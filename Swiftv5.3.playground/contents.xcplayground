@@ -20,6 +20,7 @@
         <page name='17. Error Handling'/>
         <page name='18. Type Casting'/>
         <page name='20. Extensions'/>
+        <page name='21. Protocols'/>
         <page name='26. Access Control'/>
     </pages>
 </playground>

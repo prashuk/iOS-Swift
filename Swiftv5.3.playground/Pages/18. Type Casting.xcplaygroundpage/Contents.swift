@@ -3,7 +3,6 @@ import Foundation
 // Type casting is a way to check the type of an instance, or to treat that instance as a different superclass or subclass from somewhere else in its own class hierarchy.
 // Type casting in Swift is implemented with the 'is' and 'as' operators
 
-// Example
 class MediaItem {
     var name: String
     init(name: String) {
