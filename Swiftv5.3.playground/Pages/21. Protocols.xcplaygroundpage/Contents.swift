@@ -381,4 +381,51 @@ wishHappyBirthday(to: birthdayPerson)
 
 
 // Optional Protocol Requirements
+// You can define optional requirements for protocols. These requirements don’t have to be implemented by types that conform to the protocol. Optional requirements are prefixed by the optional modifier as part of the protocol’s definition. Optional requirements are available so that you can write code that interoperates with Objective-C. Both the protocol and the optional requirement must be marked with the @objc attribute. Note that @objc protocols can be adopted only by classes that inherit from Objective-C classes or other @objc classes. They can’t be adopted by structures or enumerations.
+@objc protocol CounterDataSource {
+    @objc optional func increment(forCount count: Int) -> Int
+    @objc optional var fixedIncrement: Int { get }
+}
+class Counter {
+    var count = 0
+    var dataSource: CounterDataSource?
+    func increment() {
+        if let amount = dataSource?.increment?(forCount: count) {
+            count += amount
+        } else if let amount = dataSource?.fixedIncrement {
+            count += amount
+        }
+    }
+}
 
+
+
+// Protocol Extensions
+// Protocols can be extended to provide method, initializer, subscript, and computed property implementations to conforming types. This allows you to define behavior on protocols themselves, rather than in each type’s individual conformance or in a global function.
+extension RandomNumberGenerator {
+    func randomBool() -> Bool {
+        return random() > 0.5
+    }
+}
+// By creating an extension on the protocol, all conforming types automatically gain this method implementation without any additional modification.
+
+
+
+// Providing Default Implementations
+// You can use protocol extensions to provide a default implementation to any method or computed property requirement of that protocol. If a conforming type provides its own implementation of a required method or property, that implementation will be used instead of the one provided by the extension.
+// Protocol requirements with default implementations provided by extensions are distinct from optional protocol requirements. Although conforming types don’t have to provide their own implementation of either, requirements with default implementations can be called without optional chaining.
+
+
+
+// Adding Constraints to Protocol Extensions
+// When you define a protocol extension, you can specify constraints that conforming types must satisfy before the methods and properties of the extension are available. You write these constraints after the name of the protocol you’re extending by writing a generic where clause.
+extension Collection where Element: Equatable {
+    func allEqual() -> Bool {
+        for element in self {
+            if element != self.first {
+                return false
+            }
+        }
+        return true
+    }
+}
