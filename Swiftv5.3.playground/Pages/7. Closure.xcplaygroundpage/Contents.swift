@@ -6,6 +6,7 @@ import Foundation
 
 // Global and nested functions, as introduced in Functions, are actually special cases of closures.
 
+
 /*
  Closures take one of three forms:
 

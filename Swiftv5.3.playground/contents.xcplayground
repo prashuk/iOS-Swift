@@ -22,6 +22,7 @@
         <page name='19. Nested Types'/>
         <page name='20. Extensions'/>
         <page name='21. Protocols'/>
+        <page name='23. Opaque Types'/>
         <page name='26. Access Control'/>
     </pages>
 </playground>
