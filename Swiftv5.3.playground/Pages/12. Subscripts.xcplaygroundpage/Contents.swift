@@ -66,6 +66,8 @@ matrix
  3.2    0.0
 */
 
+
+
 // Type Subscripts
 enum Planet: Int {
     case mercury = 1, venus, earth, mars, jupiter, saturn, uranus, neptune
@@ -75,6 +77,7 @@ enum Planet: Int {
 }
 let mars = Planet[4]
 print(mars)
+
 
 
 // Type Aliasing
