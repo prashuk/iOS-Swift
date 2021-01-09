@@ -1,7 +1,7 @@
 import Foundation
 
-// Swift provides its own versions of all fundamental C and Objective-C types, including Int for integers, Double and Float for floating-point values, Bool for Boolean values, and String for textual data. Swift also provides powerful versions of the three primary collection types, Array, Set, and Dictionary.
-
+// Int for integers, Double and Float for floating-point values, Bool for Boolean values, and String for textual data.
+// Swift also provides powerful versions of the three primary collection types, Array, Set, and Dictionary.
 // Swift introduces advanced types not found in Objective-C, such as tuples.
 
 // Swift also introduces optional types, which handle the absence of a value. Optionals say either “there is a value, and it equals x” or “there isn’t a value at all”. Using optionals is similar to using nil with pointers in Objective-C, but they work for any type, not just classes.
