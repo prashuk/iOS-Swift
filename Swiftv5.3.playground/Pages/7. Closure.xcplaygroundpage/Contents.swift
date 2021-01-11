@@ -7,30 +7,32 @@ import Foundation
 // Global and nested functions, as introduced in Functions, are actually special cases of closures.
 
 
+
 /*
  Closures take one of three forms:
 
- Global functions are closures that have a name and don’t capture any values.
- Nested functions are closures that have a name and can capture values from their enclosing function.
- Closure expressions are unnamed closures written in a lightweight syntax that can capture values from their surrounding context.
+ 1. Global functions are closures that have a name and don’t capture any values.
+ 2. Nested functions are closures that have a name and can capture values from their enclosing function.
+ 3. Closure expressions are unnamed closures written in a lightweight syntax that can capture values from their surrounding context.
+ 
  Swift’s closure expressions have a clean, clear style, with optimizations that encourage brief, clutter-free syntax in common scenarios. These optimizations include:
-
- Inferring parameter and return value types from context
- Implicit returns from single-expression closures
- Shorthand argument names
- Trailing closure syntax
+    Inferring parameter and return value types from context
+    Implicit returns from single-expression closures
+    Shorthand argument names
+    Trailing closure syntax
  */
+
 
 
 // Closure Expressions
 // Nested functions, as introduced in Nested Functions, are a convenient means of naming and defining self-contained blocks of code as part of a larger function. However, it is sometimes useful to write shorter versions of function-like constructs without a full declaration and name.
 // Closure expressions are a way to write inline closures in a brief, focused syntax.
-
 let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
 func backward(_ s1: String, _ s2: String) -> Bool {
     return s1 > s2
 }
-var reversedNames = names.sorted(by: backward)
+var reversedNames = names.sorted(by: backward(_:_:))
+
 
 
 // Closure Exoression Syntax
@@ -51,7 +53,7 @@ computeBonusDamage(25)
 reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
     return s1 > s2
 })
-// Note that the declaration of parameters and return type for this inline closure is identical to the declaration from the backward(_:_:) function.
+
 
 
 // Inferring Type From Context
@@ -78,6 +80,7 @@ reversedNames = names.sorted(by: { $0 > $1 })
 reversedNames = names.sorted(by: >)
 
 
+
 // Trailing Closures
 // If you need to pass a closure expression to a function as the function’s final argument and the closure expression is long, it can be useful to write it as a trailing closure instead.
 // You write a trailing closure after the function call’s parentheses, even though the trailing closure is still an argument to the function.
@@ -93,10 +96,13 @@ someFunctionThatTakesClosure {
 }
 
 
+
+// *********************** IMP ************************ //
 // The string-sorting closure from the Closure Expression Syntax section above can be written outside of the sorted(by:) method’s parentheses as a trailing closure:
 reversedNames = names.sorted() { $0 > $1 }
 // If a closure expression is provided as the function’s or method’s only argument and you provide that expression as a trailing closure, you don’t need to write a pair of parentheses () after the function or method’s name when you call the function:
 reversedNames = names.sorted { $0 > $1 }
+
 
 
 // Capturing Values
@@ -115,8 +121,10 @@ incrementByTen() // returns a value of 10
 incrementByTen() // returns a value of 20
 
 
+
 // Closures Are Reference Types
 // In the example above, incrementBySeven and incrementByTen are constants, but the closures these constants refer to are still able to increment the runningTotal variables that they have captured. This is because functions and closures are reference types.
+
 
 
 // Escaping Closures
@@ -128,6 +136,7 @@ func someFunctionWithEscapingClosure(completionHnadler: @escaping () -> Void) {
     completionHandlers.append(completionHnadler)
 }
 // The someFunctionWithEscapingClosure(_:) function takes a closure as its argument and adds it to an array that’s declared outside the function. If you didn’t mark the parameter of this function with @escaping, you would get a compile-time error.
+
 
 // An escaping closure that refers to self needs special consideration if self refers to an instance of a class. Capturing self in an escaping closure makes it easy to accidentally create a strong reference cycle
 
@@ -168,6 +177,7 @@ struct SomeStruct {
     }
 }
 // The call to the someFunctionWithEscapingClosure function in the example above is an error because it’s inside a mutating method, so self is mutable. That violates the rule that escaping closures can’t capture a mutable reference to self for structures.
+
 
 
 // Autoclosure
