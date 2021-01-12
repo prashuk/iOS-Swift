@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 // An instance of a class is traditionally known as an object.
 // However, Swift structures and classes are much closer in functionality than in other languages

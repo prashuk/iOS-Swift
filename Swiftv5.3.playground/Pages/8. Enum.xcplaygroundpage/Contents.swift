@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 // Syntax
 enum SomeEnum {
