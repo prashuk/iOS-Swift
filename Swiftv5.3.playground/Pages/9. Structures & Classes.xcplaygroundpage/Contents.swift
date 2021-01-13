@@ -125,6 +125,6 @@ print("The frameRate property of tenEighty is now \(tenEighty.frameRate)") // 30
 // Identical to (===)
 // Not identical to (!==)
 // Use these operators to check whether two constants or variables refer to the same single instance:
-if tenEighty === alsoTenEighty {
+if tenEighty === alsoTenEighty { // three equal signs
     print("tenEighty and alsoTenEighty refer to the same VideoMode instance.") // execute
 }
