@@ -2,9 +2,8 @@
  
  https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html
  
- - Properties
+ - Properties - Property wrapper
  - Initialization
- - Optional Chaining
  - Error Handling
  - Generics
  - Opaque Types
