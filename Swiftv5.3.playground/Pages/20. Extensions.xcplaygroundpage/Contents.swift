@@ -24,7 +24,7 @@ import Foundation
 */
 
 // Adding protocol conformance in this way is described in Adding Protocol Conformance with an Extension.
-// An extension can be used to extend an existing generic type, as described in Extending a Generic Type.
+// An extension can be used to extend an existing generic type.
 
 // If you define an extension to add new functionality to an existing type, the new functionality will be available on all existing instances of that type, even if they were created before the extension was defined.
 
@@ -50,7 +50,8 @@ print("Three feet is \(threeFeet) meters") // Prints "Three feet is 0.9143999707
 
 // Initializers
 // Extensions can add new initializers to existing types. This enables you to extend other types to accept your own custom types as initializer parameters
-// Extensions can add new convenience initializers to a class, but they cannot add new designated initializers or deinitializers to a class. Designated initializers and deinitializers must always be provided by the original class implementation.
+// Extensions can add new convenience initializers to a class, but they cannot add new designated initializers or deinitializers to a class.
+// Designated initializers and deinitializers must always be provided by the original class implementation.
 // If you use an extension to add an initializer to a value type that provides default values for all of its stored properties and does not define any custom initializers, you can call the default initializer and memberwise initializer for that value type from within your extension’s initializer.
 
 // If you use an extension to add an initializer to a structure that was declared in another module, the new initializer can’t access self until it calls an initializer from the defining module.
@@ -134,24 +135,24 @@ extension Int {
     
     var kind: Kind {
         switch self {
-            case let x where x < 0:
-                return .negative
-            case 00:
-                return .zero
-            default:
-                return .positive
+        case let x where x < 0:
+            return .negative
+        case 0:
+            return .zero
+        default:
+            return .positive
         }
     }
 }
 
 func printIntegerKind(_ number: Int) {
     switch number.kind {
-        case .negative:
-            print("Negative")
-        case .zero:
-            print("Zero")
-        case .positive:
-            print("Positive")
+    case .negative:
+        print("Negative")
+    case .zero:
+        print("Zero")
+    case .positive:
+        print("Positive")
     }
 }
 printIntegerKind(1) // Positive

@@ -60,7 +60,8 @@ ncc1701.fullName
 
 
 // Method Requirements
-// Protocols can require specific instance methods and type methods to be implemented by conforming types. These methods are written as part of the protocol’s definition in exactly the same way as for normal instance and type methods, but without curly braces or a method body. Variadic parameters are allowed, subject to the same rules as for normal methods. Default values, however, can’t be specified for method parameters within a protocol’s definition.
+// Protocols can require specific instance methods and type methods to be implemented by conforming types. These methods are written as part of the protocol’s definition in exactly the same way as for normal instance and type methods, but without curly braces or a method body.
+// Variadic parameters are allowed, subject to the same rules as for normal methods. Default values, however, can’t be specified for method parameters within a protocol’s definition.
 
 // As with type property requirements, you always prefix type method requirements with the static keyword when they’re defined in a protocol. This is true even though type method requirements are prefixed with the class or static keyword when implemented by a class:
 protocol SomeOtherProtocol {
@@ -78,8 +79,7 @@ class LinearCongruentialGenerator: RandomNumberGenerator {
     let a = 3877.0
     let c = 29573.0
     func random() -> Double {
-        lastRandom = ((lastRandom * a + c)
-                        .truncatingRemainder(dividingBy:m))
+        lastRandom = ((lastRandom * a + c).truncatingRemainder(dividingBy:m))
         return lastRandom / m
     }
 }
@@ -138,7 +138,7 @@ class SomeSuperClass {
 class SomeSubClass: SomeSuperClass, SomethingProtocol {
     // "required" from SomeProtocol conformance
     // "override" from SomeSuperClass
-    required override init() {
+    required override init() { // imp
         // initializer implementation goes here
     }
 }
@@ -150,7 +150,8 @@ class SomeSubClass: SomeSuperClass, SomethingProtocol {
 
 
 // Protocols as Types
-// Protocols don’t actually implement any functionality themselves. Nonetheless, you can use protocols as a fully fledged types in your code. Using a protocol as a type is sometimes called an existential type, which comes from the phrase “there exists a type T such that T conforms to the protocol”.
+// Protocols don’t actually implement any functionality themselves. Nonetheless, you can use protocols as a fully fledged types in your code.
+// Using a protocol as a type is sometimes called an existential type, which comes from the phrase “there exists a type T such that T conforms to the protocol”.
 /*
  You can use a protocol in many places where other types are allowed, including:
  As a parameter type or return type in a function, method, or initializer
@@ -203,6 +204,7 @@ class SnakeAndLadder: DiceGame {
         board[03] = +08; board[06] = +11; board[09] = +09; board[10] = +02
         board[14] = -10; board[19] = -11; board[22] = -02; board[24] = -08
     }
+    
     weak var delegate: DiceGameDelegate?
     func play() {
         square = 0
@@ -239,12 +241,10 @@ class DiceGameTracker: DiceGameDelegate {
         }
         print("The game is using a \(game.dice.sides)-sided dice")
     }
-    
     func game(_ game: DiceGame, didStartNewTurnWithDiceRoll diceRoll: Int) {
         numberOfTurns += 1
         print("Rolled a \(diceRoll)")
     }
-    
     func gameDidEnd(_ game: DiceGame) {
         print("The game lasted for \(numberOfTurns) turns")
     }
@@ -295,6 +295,7 @@ if twoThreeFour == anotherTwoThreeFour {
 }
 // If Equatable is not written you will an error
 
+
 /*
  Swift provides a synthesized implementation of Hashable for the following kinds of custom types:
  Structures that have only stored properties that conform to the Hashable protocol
@@ -302,6 +303,15 @@ if twoThreeFour == anotherTwoThreeFour {
  Enumerations that have no associated types
 */
 // To receive a synthesized implementation of hash(into:), declare conformance to Hashable in the file that contains the original declaration, without implementing a hash(into:) method yourself.
+struct Student: Hashable {
+    var firstName: String
+    var lastName: String
+    init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+}
+var scores = [Student(firstName: "prashuk", lastName: "Ajmera"): 29]
 
 
 /*
