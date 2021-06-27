@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw' buildActiveScheme='true'>
+    <pages>
+        <page name='1. The Basics'/>
+        <page name='2. Basic Operators'/>
+        <page name='3. Strings &amp; Char'/>
+        <page name='4. Collection Types'/>
+        <page name='5. Control Flow'/>
+        <page name='6. Functions'/>
+        <page name='7. Closure'/>
+        <page name='8. Enum'/>
+        <page name='9. Structures &amp; Classes'/>
+        <page name='10. Properties'/>
+        <page name='11. Methods'/>
+        <page name='12. Subscripts'/>
+        <page name='13. Inheritance'/>
+        <page name='14. Initialization'/>
+        <page name='15. Deinitialization'/>
+        <page name='16. Optional Chaining'/>
+        <page name='17. Error Handling'/>
+        <page name='18. Type Casting'/>
+        <page name='19. Nested Types'/>
+        <page name='20. Extensions'/>
+        <page name='21. Protocols'/>
+        <page name='23. Opaque Types'/>
+        <page name='26. Access Control'/>
+        <page name='Todo&apos;s'/>
+        <page name='Extra Notes'/>
+    </pages>
+</playground>
