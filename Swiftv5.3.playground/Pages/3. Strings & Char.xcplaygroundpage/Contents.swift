@@ -66,6 +66,11 @@ let combinedEAcute: Character = "\u{65}\u{301}"          // e followed by
 // eAcute is é, combinedEAcute is é
 
 
+// ASCII Values
+Character("a").isASCII      // true
+Character("a").asciiValue   // 97
+
+
 // Counting Characters
 let unusualMenagerie = "Koala 🐨, Snail 🐌, Penguin 🐧, Dromedary 🐪"
 print("unusualMenagerie has \(unusualMenagerie.count) characters") // Prints "unusualMenagerie has 40 characters"
@@ -107,8 +112,7 @@ welcome.removeSubrange(range)
 // Substring
 let greetings = "Hello, world!"
 let index = greetings.firstIndex(of: ",") ?? greetings.endIndex
-let beginning = greetings[..<index]
-// beginning is "Hello"
+let beginning = greetings[..<index] // beginning is "Hello"
 
 // Convert the result to a String for long-term storage.
 let newString = String(beginning)
