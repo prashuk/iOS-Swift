@@ -94,7 +94,7 @@ greeting[greeting.index(greeting.startIndex, offsetBy: 7)] // a
 for index in greeting.indices {
     print("\(greeting[index]) ", terminator: "!!")
 }
-// Prints "G u t e n   T a g ! "
+// Prints "G !!u !!t !!e !!n !!  !!T !!a !!g !!! !!"
 
 
 // Inserting and Removing

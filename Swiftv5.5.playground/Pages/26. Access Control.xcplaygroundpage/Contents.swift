@@ -1,4 +1,92 @@
 import Foundation
+/*:
+ ## Open access and public access
+ - Open access is the highest (least restrictive) access level.
+ - If you define a class or any member as open than you can access it from any module or source file .
+ - You can use by just importing that module.
+ - Also you can override that class or class member as well as subclass it.
+ - Public is almost similar to Open but can be subclassed only within the module where they’re defined.
+ - A public class member is accessible but not overridable outside of the defining module.
+ */
+
+// Functions from other module (for example some library you have installed using cocoapods or carthage)
+open func dummyFunction() {
+    print("My type is open so anyone can override me.")
+}
+
+public func tempFunction() {
+    print("My type is public so no one can override me.")
+}
+
+// Let's try to override this functions in our projects swift file after importing the necessary module .
+override func dummyFunction() {} // Compiler will allow this
+
+// Compiler will give error because it is public type not open
+override func tempFunction() {}  // <- Error
+
+/*:
+ ## internal
+ - internal is the default access level.
+ - Internal classes and members can be accessed anywhere within the same module they are defined.
+ */
+
+class A {
+    internal var counter = 30
+    var badge = 50
+    init() {}
+}
+class B: A {
+    let parent = A()
+    parent.counter = 30  // <- Error
+}
+
+/*:
+ ## fileprivate
+ - fileprivate restricts the use to its own defining source file.
+ - This access specifier can be used only if you want your function/class/variables to be used within one single swift file.
+ */
+
+// FIRST.swift
+fileprivate func getName() {
+    print("Members from FIRST.swift file can get access.")
+}
+
+// SECOND.swift
+class MyViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getName()  // <- Error
+    }
+}
+
+/*:
+ ## private
+ - private access is the lowest (most restrictive) access level.
+ - Private access restricts the use of an entity to the enclosing declaration, and to extensions of that declaration that are in the same file.
+ - Also from swift 4 onwards , any extensions of that declaration in the same source file can access.
+ */
+
+// Allowed
+// FIRST.swift
+class A {
+    private func getName() {}
+    func demoFunc() {
+        getName()
+    }
+}
+extension A {
+    func test() {
+        getName() // not giving error form Swift 4
+    }
+}
+
+// Not Allowed
+// FIRST.swift
+class A {
+    private var myName = "iOS Developer"
+}
+A().myName //Error....Using an entity to the outside of enclosing declaration
+
 
 // Access control restricts access to parts of your code from code in other source files and modules. This feature enables you to hide the implementation details of your code, and to specify a preferred interface through which that code can be accessed and used.
 // You can assign specific access levels to individual types (classes, structures, and enumerations), as well as to properties, methods, initializers, and subscripts belonging to those types. Protocols can be restricted to a certain context, as can global constants, variables, and functions.
@@ -21,6 +109,7 @@ import Foundation
  
  Private access restricts the use of an entity to the enclosing declaration, and to extensions of that declaration that are in the same file. Use private access to hide the implementation details of a specific piece of functionality when those details are used only within a single declaration.
  */
+
 
 
 // Open access is the highest (least restrictive) access level and private access is the lowest (most restrictive) access level.
