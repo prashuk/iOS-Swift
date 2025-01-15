@@ -5,20 +5,19 @@ import Foundation
 /*
  You define protocols in a very similar way to classes, structures, and enumerations:
  protocol SomeProtocol {
- // protocol definition goes here
+    // protocol definition goes here
  }
  
  Custom types state that they adopt a particular protocol by placing the protocol’s name after the type’s name, separated by a colon, as part of their definition. Multiple protocols can be listed, and are separated by commas:
  struct SomeStructure: FirstProtocol, AnotherProtocol {
- // structure definition goes here
+    // structure definition goes here
  }
  
  If a class has a superclass, list the superclass name before any protocols it adopts, followed by a comma:
  class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
- // class definition goes here
+    // class definition goes here
  }
  */
-
 
 
 // Property Requirements
@@ -58,7 +57,6 @@ var ncc1701 = Starship(name: "Enterprise", prefix: "USA")
 ncc1701.fullName
 
 
-
 // Method Requirements
 // Protocols can require specific instance methods and type methods to be implemented by conforming types. These methods are written as part of the protocol’s definition in exactly the same way as for normal instance and type methods, but without curly braces or a method body.
 // Variadic parameters are allowed, subject to the same rules as for normal methods. Default values, however, can’t be specified for method parameters within a protocol’s definition.
@@ -85,7 +83,6 @@ class LinearCongruentialGenerator: RandomNumberGenerator {
 }
 
 
-
 // Mutating Method Requirements
 // It’s sometimes necessary for a method to modify (or mutate) the instance it belongs to. For instance methods on value types (that is, structures and enumerations) you place the mutating keyword before a method’s func keyword to indicate that the method is allowed to modify the instance it belongs to and any properties of that instance
 // If you mark a protocol instance method requirement as mutating, you don’t need to write the mutating keyword when writing an implementation of that method for a class. The mutating keyword is only used by structures and enumerations.
@@ -105,7 +102,6 @@ enum OnOffSwitch: Togglable {
 }
 var lightSwitch = OnOffSwitch.off
 lightSwitch.toggle()
-
 
 
 // Initializer Requirements
